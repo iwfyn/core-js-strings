@@ -420,8 +420,9 @@ function getStringFromTemplate(firstName, lastName) {
  *   extractNameFromTemplate('Hello, John Doe!') => 'John Doe'
  *   extractNameFromTemplate('Hello, Chuck Norris!') => 'Chuck Norris'
  */
-function extractNameFromTemplate(/* value */) {
-  throw new Error('Not implemented');
+function extractNameFromTemplate(value) {
+  const res = value.split(' ').splice(1, 2).join(' ');
+  return res.slice(0, res.length - 1);
 }
 
 /**
@@ -435,8 +436,10 @@ function extractNameFromTemplate(/* value */) {
  *   unbracketTag('<span>') => 'span'
  *   unbracketTag('<a>') => 'a'
  */
-function unbracketTag(/* str */) {
-  throw new Error('Not implemented');
+function unbracketTag(str) {
+  let result = str.replace(/^</g, '');
+  result = result.replace(/>$/g, '');
+  return result;
 }
 
 /**
@@ -454,8 +457,8 @@ function unbracketTag(/* str */) {
  *   ],
  *   'info@gmail.com' => ['info@gmail.com']
  */
-function extractEmails(/* str */) {
-  throw new Error('Not implemented');
+function extractEmails(str) {
+  return str.split(';');
 }
 
 /**
@@ -474,8 +477,19 @@ function extractEmails(/* str */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  const rot13Inp = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`;
+  const rot13Out = `NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm`;
+  const res = [];
+  for (let i = 0; i < str.length; i += 1) {
+    if (rot13Inp.indexOf(str[i]) === -1) {
+      res.push(str[i]);
+    } else {
+      const pushItem = rot13Out[rot13Inp.indexOf(str[i])];
+      res.push(pushItem);
+    }
+  }
+  return res.join('');
 }
 
 /**
@@ -502,8 +516,19 @@ function encodeToRot13(/* str */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(value) {
+  const cardsRealValues = {
+    '♣': 0,
+    '♦': 13,
+    '♥': 26,
+    '♠': 39,
+    J: 11,
+    Q: 12,
+    K: 13,
+    A: 1,
+  };
+  const valueNew = value.replace(/[AJQK]/, (char) => cardsRealValues[char]);
+  return +cardsRealValues[valueNew.slice(-1)] + +[valueNew.slice(0, -1)] - 1;
 }
 
 module.exports = {
